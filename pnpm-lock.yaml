@@ -36,6 +36,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: '4'
         version: 4.2.2
+      '@tanstack/eslint-plugin-query':
+        specifier: ^5.96.2
+        version: 5.96.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@types/node':
         specifier: '20'
         version: 20.19.37
@@ -573,6 +576,15 @@ packages:
 
   '@tailwindcss/postcss@4.2.2':
     resolution: {integrity: sha512-n4goKQbW8RVXIbNKRB/45LzyUqN451deQK0nzIeauVEqjlI49slUlgKYJM2QyUzap/PcpnS7kzSUmPb1sCRvYQ==}
+
+  '@tanstack/eslint-plugin-query@5.96.2':
+    resolution: {integrity: sha512-OsXCATZ+YmG8TyHrunfYy2IDB+dqY87en2im2A60JPgDAg66cCoHTzJWbe9uH8Cw9/K3NiKYlyyo1erVFu3qFw==}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: ^5.4.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   '@tanstack/query-core@5.96.0':
     resolution: {integrity: sha512-sfO3uQeol1BU7cRP6NYY7nAiX3GiNY20lI/dtSbKLwcIkYw/X+w/tEsQAkc544AfIhBX/IvH/QYtPHrPhyAKGw==}
@@ -2688,6 +2700,15 @@ snapshots:
       '@tailwindcss/oxide': 4.2.2
       postcss: 8.5.8
       tailwindcss: 4.2.2
+
+  '@tanstack/eslint-plugin-query@5.96.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)':
+    dependencies:
+      '@typescript-eslint/utils': 8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
+      eslint: 9.39.4(jiti@2.6.1)
+    optionalDependencies:
+      typescript: 5.9.3
+    transitivePeerDependencies:
+      - supports-color
 
   '@tanstack/query-core@5.96.0': {}
 

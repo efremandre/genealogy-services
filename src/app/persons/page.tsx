@@ -4,7 +4,8 @@ import { checkAuth } from '@/features/auth/api/auth.api'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function Home() {
+export default function Persons() {
+
 	const router = useRouter()
 
 	useEffect(() => {
@@ -13,8 +14,6 @@ export default function Home() {
 
 			if (!user) {
 				router.replace('/login')
-			} else {
-				router.replace('/persons')
 			}
 		}
 
@@ -22,11 +21,9 @@ export default function Home() {
 
 	}, [router])
 
-	return <div className='mt-10 text-center animate-pulse'>Loading...</div>
+	return (
+		<div>
+			<h1>Persons</h1>
+		</div>
+	)
 }
-
-/**
- * replace → не оставляет в истории (правильно для auth)
- * push → оставляет (можно вернуться назад)
- * 
- */
