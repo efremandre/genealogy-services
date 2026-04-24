@@ -19,7 +19,7 @@ export const apiRequest = async (patch: string, method: string = 'GET', body?: a
 	const response = await fetch(`${API_BASE_URL}${patch}`, options)
 
 	if (!response.ok) {
-		console.error('fetch error')
+		throw Error('Request failed! :(')
 	}
 
 	const data = await response.json()

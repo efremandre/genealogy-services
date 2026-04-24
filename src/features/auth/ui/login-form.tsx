@@ -1,10 +1,10 @@
-import { login } from '@/features/auth/api/auth.api'
-import React, { useState } from 'react'
+import { useLogin } from '@/features/auth/model/use-login'
 import { useRouter } from 'next/navigation'
+import React from 'react'
 
 export const LoginForm: React.FC = () => {
 	const router = useRouter()
-	const [isLoading, setIsLoading] = useState(false)
+	const { mutate, isPending } = useLogin()
 
 	const submitForm = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -15,22 +15,17 @@ export const LoginForm: React.FC = () => {
 
 		if (typeof email !== 'string' || typeof password !== 'string') return
 
-		setIsLoading(true)
-
-		try {
-			const user = await login(email, password)
-
-			console.log('User:', user)
-			if (user) {
-				router.replace('/persons')
+		mutate(
+			{ email, password },
+			{
+				onSuccess: () => {
+					router.replace('/persons')
+				},
+				onError: () => {
+					console.log('Ошибка логина')
+				},
 			}
-
-		} catch (e) {
-
-			console.log('Ошибка логина')
-		} finally {
-			setIsLoading(false)
-		}
+		)
 	}
 
 	return (
@@ -49,14 +44,16 @@ export const LoginForm: React.FC = () => {
 						placeholder="Password"
 						required
 						className="p-2 border rounded-xs border-gray-600" />
-					{isLoading ?
-						<div className="p-2 border rounded-xs border-gray-600">
-							<p className="text-center animate-pulse">Loading...</p>
-						</div> :
-						<input type="submit"
-							value="Отправить"
-							className="p-2 border rounded-xs border-gray-600 cursor-pointer hover:opacity-75" />
-					}
+					{isPending ?
+						(
+							<div className="p-2 border rounded-xs border-gray-600">
+								<p className="text-center animate-pulse">Loading...</p>
+							</div>
+						) : (
+							<input type="submit"
+								value="Отправить"
+								className="p-2 border rounded-xs border-gray-600 cursor-pointer hover:opacity-75" />
+						)}
 				</div>
 			</form>
 		</div>
