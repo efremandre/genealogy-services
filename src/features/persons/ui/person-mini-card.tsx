@@ -25,8 +25,11 @@ export const PersonMiniCard = ({ person }: Props) => {
 			<div className='text-center'>{`${firstName} ${lastName}`}</div>
 			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>+</button>
+
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
+
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
+
 			</div>
 		</div>
 	)
