@@ -5,10 +5,17 @@ import { useMe } from '@/features/auth/model/use-me'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import TreeLogo from '../assets/tree-logo.png'
+import { useEffect } from 'react'
 
 export const Header = () => {
 	const { data: user, isLoading } = useMe()
 	const router = useRouter()
+
+	useEffect(() => {
+		if (isLoading) {
+			console.log(user)
+		}
+	}, [isLoading, user])
 
 	const handleLogout = () => {
 		logout()
