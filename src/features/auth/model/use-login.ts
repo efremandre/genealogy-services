@@ -1,9 +1,24 @@
 'use client'
 
+import { setToken } from '@/shared/lib/token-storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { loginRequest } from '../api/auth.api'
-import { setToken } from '@/shared/lib/token-storage'
 
+/**
+ * Хук для выполнения входа пользователя в систему.
+ *
+ * Выполняет мутацию для аутентификации, сохраняет токен в localStorage
+ * и инвалидирует кэш для текущего пользователя.
+ *
+ * @returns Мутационный объект TanStack Query с методами mutate, isLoading, error и т.д.
+ *
+ * @example
+ * const loginMutation = useLogin();
+ *
+ * const handleLogin = (email: string, password: string) => {
+ *   loginMutation.mutate({ email, password });
+ * };
+ */
 export const useLogin = () => {
 	const queryClient = useQueryClient()
 
