@@ -4,7 +4,7 @@ import { useMe } from '@/features/auth/model/use-me'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function Home() {
+export const Home = () => {
 	const router = useRouter()
 	const { data: user, isLoading, isError } = useMe()
 

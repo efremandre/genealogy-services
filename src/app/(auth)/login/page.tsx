@@ -2,7 +2,7 @@
 
 import { LoginForm } from '@/features/auth/ui/login-form'
 
-export default function Login() {
+const Login = () => {
 
 	return (
 		<div className='mt-40 flex flex-col gap-4'>
@@ -11,3 +11,5 @@ export default function Login() {
 		</div>
 	)
 }
+
+export default Login

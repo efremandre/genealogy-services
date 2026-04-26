@@ -19,11 +19,11 @@ export const metadata: Metadata = {
 	description: "Сервис построения генеалогического древа",
 }
 
-export default function RootLayout({
+const RootLayout = ({
 	children,
 }: Readonly<{
 	children: React.ReactNode
-}>) {
+}>) => {
 
 	return (
 		<html
@@ -37,3 +37,5 @@ export default function RootLayout({
 		</html>
 	)
 }
+
+export default RootLayout
