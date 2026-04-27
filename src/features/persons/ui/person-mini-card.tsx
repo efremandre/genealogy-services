@@ -2,6 +2,7 @@ import FemaleAvatar from '@/features/persons/assets/female-avatar.png'
 import MaleAvatar from '@/features/persons/assets/male-avatar.png'
 import { Person } from '@/features/persons/model/persons.type'
 import Image from 'next/image'
+import { useModalStore } from '../model/modal.store'
 
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export const PersonMiniCard = ({ person }: Props) => {
+	const { open } = useModalStore()
 	const { firstName, lastName, gender } = person
 	const MaleFemaleImage = (gender === 'female') ? FemaleAvatar : MaleAvatar
 
@@ -24,7 +26,10 @@ export const PersonMiniCard = ({ person }: Props) => {
 			</div>
 			<div className='text-center'>{`${firstName} ${lastName}`}</div>
 			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
-				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>+</button>
+				<button
+					onClick={open}
+					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
+				>+</button>
 
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
 

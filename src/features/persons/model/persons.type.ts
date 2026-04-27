@@ -9,7 +9,7 @@ export type Person = {
 	/** Фамилия */
 	lastName: string
 	/** Пол (male/female) */
-	gender: 'male' | 'female' | string
+	gender: 'male' | 'female'
 	/** Год рождения */
 	birthYear: number
 	/** Месяц рождения */
