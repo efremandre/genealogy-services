@@ -18,6 +18,12 @@ export type Person = {
 	birthDay: number
 	/** Жив ли человек */
 	isAlive: boolean
+	/** Год смерти */
+	deathYear: number
+	/**Месяц смерти */
+	deathMonth: number
+	/**День смерти */
+	deathDay: number
 }
 
 /**
@@ -26,4 +32,8 @@ export type Person = {
 export type PersonsResponse = {
 	/** Массив людей */
 	persons: Person[]
+}
+
+export type AddPerson = {
+
 }

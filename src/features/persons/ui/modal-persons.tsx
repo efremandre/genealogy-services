@@ -4,14 +4,23 @@ import { useModalStore } from '../model/modal.store'
 import { Person } from '../model/persons.type'
 
 export const ModalPersons = () => {
-	const { close } = useModalStore()
+	const { close, role, setRole } = useModalStore()
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors },
-	} = useForm<Person>()
+	} = useForm<Person>({
+		defaultValues: {
+			isAlive: true,
+		},
+	})
 
-	const onSubmit: SubmitHandler<Person> = (data) => console.log(data)
+	const isAlive = watch('isAlive')
+	const onSubmit: SubmitHandler<Person> = (data) => {
+		// Здесь можно использовать role из store
+		console.log({ ...data, role })
+	}
 
 	const daysMap = days.map(day => <option key={day} value={day} className='bg-violet-950 text-white' > {day} </option>)
 	const monthsMap = months.map(m => <option key={m.value} value={m.value} className='bg-violet-950 text-white' >{m.label}</option>)
@@ -26,7 +35,19 @@ export const ModalPersons = () => {
 				>X</button>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex-1'>
 					<div className='w-80 flex flex-col h-full'>
+
 						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
+							<div>
+								<select
+									value={role}
+									onChange={(e) => setRole(e.target.value)}
+									className='w-full p-2 border rounded-xs border-gray-600'
+								>
+									<option value='' className='bg-violet-950 text-white'>Кого добавляем?</option>
+									<option value='father' className='bg-violet-950 text-white'>Отец</option>
+									<option value='mother' className='bg-violet-950 text-white'>Мать</option>
+								</select>
+							</div>
 							<input
 								{...register("firstName", { required: true })}
 								placeholder='Имя'
@@ -48,7 +69,7 @@ export const ModalPersons = () => {
 								</select>
 								<select
 									{...register('birthMonth', { valueAsNumber: true })}
-									defaultValue=""
+									defaultValue=''
 									className='p-2 border rounded-xs border-gray-600'
 								>
 									<option value='' disabled className='bg-violet-950 text-white'>Месяц</option>
@@ -56,20 +77,62 @@ export const ModalPersons = () => {
 								</select>
 								<select
 									{...register("birthYear", { valueAsNumber: true })}
-									defaultValue=""
+									defaultValue=''
 									className='p-2 border rounded-xs border-gray-600'
 								>
 									<option value='' disabled className='bg-violet-950 text-white'>Год</option>
 									{yearsMap}
 								</select>
 							</div>
+							<div>
+								<label className="flex items-center gap-2 my-3 text-white cursor-pointer">
+									<input
+										type="checkbox"
+										{...register('isAlive')}
+									/>
+									Человек жив
+								</label>
+
+								{!isAlive && (
+									<div className='flex justify-between gap-2'>
+										<select
+											{...register('deathDay', { valueAsNumber: true })}
+											defaultValue=''
+											className='p-2 border rounded-xs border-gray-600'>
+											<option value='' className='bg-violet-950 text-white'>День</option>
+											{days.map(day => (
+												<option key={day} value={day} className='bg-violet-950 text-white'>{day}</option>
+											))}
+										</select>
+
+										<select
+											{...register('deathMonth', { valueAsNumber: true })}
+											defaultValue=''
+											className='p-2 border rounded-xs border-gray-600'>
+											<option value='' className='bg-violet-950 text-white'>Месяц</option>
+											{months.map(month => (
+												<option key={month.value} value={month.value} className='bg-violet-950 text-white'>
+													{month.label}
+												</option>
+											))}
+										</select>
+
+										<select
+											{...register('deathYear', { valueAsNumber: true })}
+											defaultValue=''
+											className='p-2 border rounded-xs border-gray-600'>
+											<option value='' className='bg-violet-950 text-white'>Год</option>
+											{years.map(year => (
+												<option key={year} value={year} className='bg-violet-950 text-white'>{year}</option>
+											))}
+										</select>
+									</div>
+								)}
+							</div>
 						</div>
 						<div className='w-full flex flex-col gap-4'>
-							<div>
-
-							</div>
 							<input
-								type="submit"
+								type='submit'
 								className="p-2 border rounded-xs border-gray-600 cursor-pointer hover:opacity-75"
 							/>
 						</div>
