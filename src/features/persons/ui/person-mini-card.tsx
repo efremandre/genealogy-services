@@ -11,7 +11,7 @@ type Props = {
 
 export const PersonMiniCard = ({ person }: Props) => {
 	const { open } = useModalStore()
-	const { firstName, lastName, gender } = person
+	const { id, firstName, lastName, gender } = person
 	const MaleFemaleImage = (gender === 'female') ? FemaleAvatar : MaleAvatar
 
 	return (
@@ -27,7 +27,7 @@ export const PersonMiniCard = ({ person }: Props) => {
 			<div className='text-center'>{`${firstName} ${lastName}`}</div>
 			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
 				<button
-					onClick={open}
+					onClick={() => open(id)}
 					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
 				>+</button>
 
@@ -36,6 +36,6 @@ export const PersonMiniCard = ({ person }: Props) => {
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
 
 			</div>
-		</div>
+		</div >
 	)
 }

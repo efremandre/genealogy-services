@@ -4,7 +4,7 @@ import { useModalStore } from '../model/modal.store'
 import { Person } from '../model/persons.type'
 
 export const ModalPersons = () => {
-	const { close, role, setRole } = useModalStore()
+	const { currentPersonId, close, role, setRole } = useModalStore()
 	const {
 		register,
 		handleSubmit,
@@ -28,6 +28,7 @@ export const ModalPersons = () => {
 
 	return (
 		<div className='fixed w-full h-full z-10 top-0 right-0 flex justify-end inset-0 bg-black/30 backdrop-blur-sm box-border'>
+			<div className='absolute top-10 left-10'>id person store: {currentPersonId}</div>
 			<div className='relative w-max max-w-full h-full p-4 bg-blue-950 flex flex-col'>
 				<button
 					onClick={close}
