@@ -21,6 +21,9 @@ export const ModalPersons = () => {
 	const isAlive = watch('isAlive')
 
 	const onSubmit: SubmitHandler<AddRequestPerson> = (data) => {
+		if (!currentPersonId) {
+			throw new Error('No current Person Id')
+		}
 
 		const gender: 'male' | 'female' = (role === 'father') ? 'male' : 'female'
 
@@ -29,9 +32,16 @@ export const ModalPersons = () => {
 			gender
 		}
 
-		mutate(requestData)
-
-		console.log(requestData)
+		mutate({
+			body: requestData,
+			role,
+			currentPersonId
+		},
+			{
+				onSuccess: () => {
+					close()
+				}
+			})
 	}
 
 	const daysMap = days.map(day => <option key={day} value={day} className='bg-violet-950 text-white' > {day} </option>)

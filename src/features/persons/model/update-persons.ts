@@ -2,8 +2,9 @@
 
 import { getToken } from '@/shared/lib/token-storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { personsCreate, personsUpdate } from '../api/persons.api'
-import { CreatePersonMutationArgs } from './persons.type'
+import { personsUpdate } from '../api/persons.api'
+import { useModalStore } from './modal.store'
+import { UpdatePerson } from './persons.type'
 
 /**
  * Хук для получения списка всех людей из API.
@@ -21,27 +22,24 @@ import { CreatePersonMutationArgs } from './persons.type'
  *
  * return persons.map(person => <div key={person.id}>{person.firstName}</div>);
  */
-export const useCreatePerson = () => {
+export const useUpdatePerson = () => {
+	const { currentPersonId } = useModalStore()
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: async ({
-			body,
-			currentPersonId,
-			role
-		}: CreatePersonMutationArgs) => {
+		mutationFn: async (body: UpdatePerson) => {
 			const token = getToken()
 
 			if (!token) {
 				throw new Error('No token')
 			}
 
-			const createdPerson = await personsCreate(body, token)
-			const newPersonId = createdPerson.person.id
-			const parentIdField = role === 'father' ? 'fatherId' : 'motherId'
-			const updateParentPerson = await personsUpdate(currentPersonId, { [parentIdField]: newPersonId }, token)
+			if (!currentPersonId) {
+				throw new Error('No current Person Id')
+			}
 
-			return updateParentPerson
+			const res = personsUpdate(currentPersonId, body, token)
+			return res
 		},
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['persons'] })

@@ -48,3 +48,27 @@ export type AddRequestPerson = {
 	deathMonth?: number
 	deathDay?: number
 }
+
+export type UpdatePerson = {
+	firstName?: string
+	lastName?: string
+	birthYear?: number
+	birthMonth?: number
+	birthDay?: number
+	isAlive?: boolean
+	deathYear?: number
+	deathMonth?: number
+	deathDay?: number
+	motherId?: number
+	fatherId?: number
+}
+
+export type UpdatePersonResponse = {
+	person: Person
+}
+
+export type CreatePersonMutationArgs = {
+	body: AddRequestPerson
+	currentPersonId: number
+	role: 'father' | 'mother' | ''
+}

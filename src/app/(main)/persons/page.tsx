@@ -31,7 +31,7 @@ const Persons = () => {
 				<div className='flex flex-col items-center gap-4'>
 					<PersonMiniCard person={rootPerson} />
 				</div>
-				<ul className='flex justify-center items-center gap-4'>
+				<ul className='flex justify-center items-center flex-wrap gap-4'>
 					{
 						filterPerson.map(person => <li key={person.id}><PersonMiniCard person={person} /></li>)
 					}
