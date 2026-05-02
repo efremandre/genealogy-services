@@ -4,7 +4,7 @@ import { useMe } from '@/features/auth/model/use-me'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
-export default function Home() {
+const Home = () => {
 	const router = useRouter()
 	const { data: user, isLoading, isError } = useMe()
 
@@ -21,6 +21,8 @@ export default function Home() {
 
 	return <div className='mt-10 text-center animate-pulse'>Loading...</div>
 }
+
+export default Home
 
 /**
  * replace → не оставляет в истории (правильно для auth)

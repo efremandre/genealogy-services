@@ -1,8 +1,9 @@
 'use client'
 
 import { getToken } from '@/shared/lib/token-storage'
-import { useQuery } from '@tanstack/react-query'
-import { personsRequest } from '../api/persons.api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { personsCreate, personsUpdate } from '../api/persons.api'
+import { CreatePersonMutationArgs } from './persons.type'
 
 /**
  * Хук для получения списка всех людей из API.
@@ -20,19 +21,30 @@ import { personsRequest } from '../api/persons.api'
  *
  * return persons.map(person => <div key={person.id}>{person.firstName}</div>);
  */
-export const usePersons = () => {
-	return useQuery({
-		queryKey: ['persons'],
-		queryFn: async () => {
+export const useCreatePerson = () => {
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async ({
+			body,
+			currentPersonId,
+			role
+		}: CreatePersonMutationArgs) => {
 			const token = getToken()
 
 			if (!token) {
 				throw new Error('No token')
 			}
 
-			const res = await personsRequest(token)
-			return res.persons
+			const createdPerson = await personsCreate(body, token)
+			const newPersonId = createdPerson.person.id
+			const parentIdField = role === 'father' ? 'fatherId' : 'motherId'
+			const updateParentPerson = await personsUpdate(currentPersonId, { [parentIdField]: newPersonId }, token)
+
+			return updateParentPerson
 		},
-		retry: false,
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ['persons'] })
+		},
 	})
 }

@@ -35,7 +35,7 @@
 		".next/types/**/*.ts",
 		".next/dev/types/**/*.ts",
 		"**/*.mts",
-		"src/features/persons/api/persons.api,ts"
+		"src/features/persons/api/persons.api.ts"
 	],
 	"exclude": [
 		"node_modules"

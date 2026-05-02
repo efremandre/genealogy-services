@@ -1,8 +1,10 @@
 'use client'
 
 import { getToken } from '@/shared/lib/token-storage'
-import { useQuery } from '@tanstack/react-query'
-import { personsRequest } from '../api/persons.api'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { personsUpdate } from '../api/persons.api'
+import { useModalStore } from './modal.store'
+import { UpdatePerson } from './persons.type'
 
 /**
  * Хук для получения списка всех людей из API.
@@ -20,19 +22,27 @@ import { personsRequest } from '../api/persons.api'
  *
  * return persons.map(person => <div key={person.id}>{person.firstName}</div>);
  */
-export const usePersons = () => {
-	return useQuery({
-		queryKey: ['persons'],
-		queryFn: async () => {
+export const useUpdatePerson = () => {
+	const { currentPersonId } = useModalStore()
+	const queryClient = useQueryClient()
+
+	return useMutation({
+		mutationFn: async (body: UpdatePerson) => {
 			const token = getToken()
 
 			if (!token) {
 				throw new Error('No token')
 			}
 
-			const res = await personsRequest(token)
-			return res.persons
+			if (!currentPersonId) {
+				throw new Error('No current Person Id')
+			}
+
+			const res = personsUpdate(currentPersonId, body, token)
+			return res
 		},
-		retry: false,
+		onSuccess: async () => {
+			await queryClient.invalidateQueries({ queryKey: ['persons'] })
+		},
 	})
 }

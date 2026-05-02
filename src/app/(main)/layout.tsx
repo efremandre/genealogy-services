@@ -4,11 +4,11 @@ import { Protected } from '@/shared/lib/guard/Protected'
 import { Footer } from '@/widgets/footer/ui/footer'
 import { Header } from '@/widgets/header/ui/header'
 
-export default function MainLayout({
+const MainLayout = ({
 	children,
 }: Readonly<{
 	children: React.ReactNode
-}>) {
+}>) => {
 
 	return (
 		<Protected>
@@ -24,3 +24,5 @@ export default function MainLayout({
 		</Protected>
 	)
 }
+
+export default MainLayout

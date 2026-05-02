@@ -10,20 +10,20 @@ const geistSans = Geist({
 })
 
 const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
+	variable: '--font-geist-mono',
+	subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-	title: "Генеалогическое древо",
+	title: 'Родология',
 	description: "Сервис построения генеалогического древа",
 }
 
-export default function RootLayout({
+const RootLayout = ({
 	children,
 }: Readonly<{
 	children: React.ReactNode
-}>) {
+}>) => {
 
 	return (
 		<html
@@ -37,3 +37,5 @@ export default function RootLayout({
 		</html>
 	)
 }
+
+export default RootLayout
