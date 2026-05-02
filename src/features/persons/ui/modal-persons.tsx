@@ -1,25 +1,37 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useCreatePerson } from '../model/create-persons'
 import { days, months, years } from '../model/date-options'
 import { useModalStore } from '../model/modal.store'
-import { Person } from '../model/persons.type'
+import { AddRequestPerson, RoleType } from '../model/persons.type'
 
 export const ModalPersons = () => {
+	const { mutate, isPending } = useCreatePerson()
 	const { currentPersonId, close, role, setRole } = useModalStore()
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm<Person>({
+	} = useForm<AddRequestPerson>({
 		defaultValues: {
 			isAlive: true,
 		},
 	})
 
 	const isAlive = watch('isAlive')
-	const onSubmit: SubmitHandler<Person> = (data) => {
-		// Здесь можно использовать role из store
-		console.log({ ...data, role })
+
+	const onSubmit: SubmitHandler<AddRequestPerson> = (data) => {
+
+		const gender: 'male' | 'female' = (role === 'father') ? 'male' : 'female'
+
+		const requestData = {
+			...data,
+			gender
+		}
+
+		mutate(requestData)
+
+		console.log(requestData)
 	}
 
 	const daysMap = days.map(day => <option key={day} value={day} className='bg-violet-950 text-white' > {day} </option>)
@@ -40,11 +52,12 @@ export const ModalPersons = () => {
 						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
 							<div>
 								<select
+									required
 									value={role}
-									onChange={(e) => setRole(e.target.value)}
+									onChange={(e) => setRole(e.target.value as RoleType)}
 									className='w-full p-2 border rounded-xs border-gray-600'
 								>
-									<option value='' className='bg-violet-950 text-white'>Кого добавляем?</option>
+									<option value='' className='bg-violet-950 text-white'>Родство</option>
 									<option value='father' className='bg-violet-950 text-white'>Отец</option>
 									<option value='mother' className='bg-violet-950 text-white'>Мать</option>
 								</select>
@@ -56,20 +69,25 @@ export const ModalPersons = () => {
 							/>
 							{errors.firstName && <span>This field is required</span>}
 							<input
-								{...register('lastName')}
+								{...register('lastName', { required: true })}
 								placeholder='Фамилия'
 								className='p-2 border rounded-xs border-gray-600'
 							/>
+							{errors.lastName && <span>This field is required</span>}
 							<div className='flex justify-between gap-2'>
 								<select
-									{...register('birthDay', { valueAsNumber: true })}
+									{...register('birthDay', {
+										setValueAs: value => value === '' ? undefined : Number(value),
+									})}
 									defaultValue='' className='p-2 border rounded-xs border-gray-600'
 								>
 									<option value='' disabled className='bg-violet-950 text-white' >День</option>
 									{daysMap}
 								</select>
 								<select
-									{...register('birthMonth', { valueAsNumber: true })}
+									{...register('birthMonth', {
+										setValueAs: value => value === '' ? undefined : Number(value),
+									})}
 									defaultValue=''
 									className='p-2 border rounded-xs border-gray-600'
 								>
@@ -77,7 +95,9 @@ export const ModalPersons = () => {
 									{monthsMap}
 								</select>
 								<select
-									{...register("birthYear", { valueAsNumber: true })}
+									{...register("birthYear", {
+										setValueAs: value => value === '' ? undefined : Number(value),
+									})}
 									defaultValue=''
 									className='p-2 border rounded-xs border-gray-600'
 								>
@@ -132,10 +152,14 @@ export const ModalPersons = () => {
 							</div>
 						</div>
 						<div className='w-full flex flex-col gap-4'>
-							<input
-								type='submit'
-								className="p-2 border rounded-xs border-gray-600 cursor-pointer hover:opacity-75"
-							/>
+							{
+								isPending ?
+									<div>Loadibg</div> :
+									<input
+										type='submit'
+										className="p-2 border rounded-xs border-gray-600 cursor-pointer hover:opacity-75"
+									/>
+							}
 						</div>
 					</div>
 				</form>

@@ -1,6 +1,5 @@
 import { create } from 'zustand'
-
-type RoleType = 'father' | 'mother' | ''
+import { RoleType } from './persons.type'
 
 type Store = {
 	isOpen: boolean

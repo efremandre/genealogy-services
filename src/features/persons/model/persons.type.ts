@@ -1,3 +1,5 @@
+export type RoleType = 'father' | 'mother' | ''
+
 /**
  * Тип данных для человека в генеалогическом древе.
  */
@@ -34,6 +36,15 @@ export type PersonsResponse = {
 	persons: Person[]
 }
 
-export type AddPerson = {
-
+export type AddRequestPerson = {
+	firstName: string
+	lastName: string
+	gender: 'male' | 'female'
+	birthYear?: number
+	birthMonth?: number
+	birthDay?: number
+	isAlive: boolean
+	deathYear?: number
+	deathMonth?: number
+	deathDay?: number
 }

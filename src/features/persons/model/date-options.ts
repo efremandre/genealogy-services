@@ -16,6 +16,7 @@ export const months = [
 ]
 
 const currentYear = new Date().getFullYear()
+
 export const years = Array.from(
 	{ length: currentYear - 1800 + 1 },
 	(_, index) => currentYear - index
