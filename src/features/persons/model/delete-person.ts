@@ -24,11 +24,15 @@ export const useDeletePerson = () => {
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: async (currentPersonId: number) => {
+		mutationFn: async (currentPersonId: number | null) => {
 			const token = getToken()
 
 			if (!token) {
 				throw new Error('No token')
+			}
+
+			if (!currentPersonId) {
+				throw new Error('No current Person Id')
 			}
 
 			const res = await personsDelete(currentPersonId, token)

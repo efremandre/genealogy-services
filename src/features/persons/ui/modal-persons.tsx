@@ -58,7 +58,6 @@ export const ModalPersons = () => {
 				>X</button>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex-1'>
 					<div className='w-80 flex flex-col h-full'>
-
 						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
 							<div>
 								<select

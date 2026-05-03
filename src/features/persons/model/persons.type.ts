@@ -30,6 +30,10 @@ export type Person = {
 	deathMonth: number
 	/**День смерти */
 	deathDay: number
+	/**Айди отца */
+	fatherId: number
+	/**Айди матери */
+	motherId: number
 }
 
 /**
