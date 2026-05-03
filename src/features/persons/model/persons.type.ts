@@ -10,6 +10,10 @@ export type Person = {
 	firstName: string
 	/** Фамилия */
 	lastName: string
+	/** Девичья фамилия */
+	maidenName: string
+	/** Отчество */
+	middleName: string
 	/** Пол (male/female) */
 	gender: 'male' | 'female'
 	/** Год рождения */
@@ -39,6 +43,8 @@ export type PersonsResponse = {
 export type AddRequestPerson = {
 	firstName: string
 	lastName: string
+	maidenName?: string
+	middleName?: string
 	gender: 'male' | 'female'
 	birthYear?: number
 	birthMonth?: number
@@ -52,6 +58,8 @@ export type AddRequestPerson = {
 export type UpdatePerson = {
 	firstName?: string
 	lastName?: string
+	maidenName?: string
+	middleName?: string
 	birthYear?: number
 	birthMonth?: number
 	birthDay?: number
