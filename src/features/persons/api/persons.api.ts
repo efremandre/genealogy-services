@@ -15,3 +15,8 @@ export const personsUpdate = async (id: number, body: UpdatePerson, token: strin
 	const { data } = await apiRequest(`persons/${id}`, 'PATCH', body, token)
 	return data
 }
+
+export const personsDelete = async (id: number, token: string): Promise<any> => {
+	const { data } = await apiRequest(`persons/${id}`, 'DELETE', undefined, token)
+	return data
+}

@@ -2,6 +2,7 @@ import FemaleAvatar from '@/features/persons/assets/female-avatar.png'
 import MaleAvatar from '@/features/persons/assets/male-avatar.png'
 import { Person } from '@/features/persons/model/persons.type'
 import Image from 'next/image'
+import { useModalDeleteStore } from '../model/modal-delete.store'
 import { useModalStore } from '../model/modal.store'
 
 
@@ -11,8 +12,12 @@ type Props = {
 
 export const PersonMiniCard = ({ person }: Props) => {
 	const { open } = useModalStore()
-	const { id, firstName, lastName, gender } = person
+	const { openModalDelete } = useModalDeleteStore()
+	const { id, firstName, lastName, maidenName, middleName, gender, fatherId, motherId } = person
 	const MaleFemaleImage = (gender === 'female') ? FemaleAvatar : MaleAvatar
+
+	const isName = (name: string) => name ? name : ''
+	const isParent = fatherId || motherId
 
 	return (
 		<div className='p-2 flex flex-col items-center gap-4 w-[200] rounded-md group relative'>
@@ -24,14 +29,18 @@ export const PersonMiniCard = ({ person }: Props) => {
 					alt='Logo'
 				/>
 			</div>
-			<div className='text-center'>{`${firstName} ${lastName}`}</div>
+			<div className='text-center'>{`${firstName} ${isName(maidenName)} ${lastName} ${isName(middleName)}`}</div>
 			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
 				<button
 					onClick={() => open(id)}
 					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
 				>+</button>
-
-				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
+				{
+					!isParent &&
+					<button
+						onClick={() => openModalDelete(id)}
+						className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
+				}
 
 				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
 
