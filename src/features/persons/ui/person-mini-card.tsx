@@ -3,20 +3,20 @@ import MaleAvatar from '@/features/persons/assets/male-avatar.png'
 import { Person } from '@/features/persons/model/persons.type'
 import Image from 'next/image'
 import { useModalDeleteStore } from '../model/modal-delete.store'
-import { useModalStore } from '../model/modal.store'
-
+import { usePersonStore } from '../model/person.store'
 
 type Props = {
 	person: Person
 }
 
 export const PersonMiniCard = ({ person }: Props) => {
-	const { open } = useModalStore()
+	const openModalCreatePerson = usePersonStore((s) => s.open)
 	const { openModalDelete } = useModalDeleteStore()
 	const { id, firstName, lastName, maidenName, middleName, gender, fatherId, motherId } = person
 	const MaleFemaleImage = (gender === 'female') ? FemaleAvatar : MaleAvatar
 
 	const isName = (name: string) => name ? name : ''
+	const isMaidenName = (name: string) => name ? `(${name})` : ''
 	const isParent = fatherId || motherId
 
 	return (
@@ -29,10 +29,10 @@ export const PersonMiniCard = ({ person }: Props) => {
 					alt='Logo'
 				/>
 			</div>
-			<div className='text-center'>{`${firstName} ${isName(maidenName)} ${lastName} ${isName(middleName)}`}</div>
+			<div className='text-center'>{`${firstName} ${isMaidenName(maidenName)} ${lastName} ${isName(middleName)}`}</div>
 			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
 				<button
-					onClick={() => open(id)}
+					onClick={() => openModalCreatePerson('createPerson', { currentPersonId: id })}
 					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
 				>+</button>
 				{
@@ -42,7 +42,9 @@ export const PersonMiniCard = ({ person }: Props) => {
 						className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
 				}
 
-				<button className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
+				<button
+					onClick={() => openModalDelete(id)}
+					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
 
 			</div>
 		</div >

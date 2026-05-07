@@ -1,39 +1,35 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useCreatePerson } from '../model/create-persons'
 import { days, months, years } from '../model/date-options'
-import { useModalStore } from '../model/modal.store'
-import { AddRequestPerson, RoleType } from '../model/persons.type'
+import { usePersonStore } from '../model/person.store'
+import { CreatePersonFormValues, CreatePersonMutationArgs } from '../model/persons.type'
 
 export const ModalPersons = () => {
 	const { mutate, isPending } = useCreatePerson()
-	const { currentPersonId, close, role, setRole } = useModalStore()
+	const close = usePersonStore((s) => s.close)
+	const currentPersonId = usePersonStore((s) => s.payload?.currentPersonId)
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm<AddRequestPerson>({
+	} = useForm<CreatePersonFormValues>({
 		defaultValues: {
 			isAlive: true,
+			role: ''
 		},
 	})
 
 	const isAlive = watch('isAlive')
+	const role = watch('role')
 
-	const onSubmit: SubmitHandler<AddRequestPerson> = (data) => {
+	const onSubmit: SubmitHandler<CreatePersonFormValues> = (data) => {
 		if (!currentPersonId) {
 			throw new Error('No current Person Id')
 		}
 
-		const gender: 'male' | 'female' = (role === 'father') ? 'male' : 'female'
-
-		const requestData = {
-			...data,
-			gender
-		}
-
 		mutate({
-			body: requestData,
+			body: data,
 			role,
 			currentPersonId
 		},
@@ -49,8 +45,7 @@ export const ModalPersons = () => {
 	const yearsMap = years.map(year => <option key={year} value={year} className='bg-violet-950 text-white'>{year}</option>)
 
 	return (
-		<div className='fixed w-full h-full z-10 top-0 right-0 flex justify-end inset-0 bg-black/30 backdrop-blur-sm box-border'>
-			<div className='absolute top-10 left-10'>id person store: {currentPersonId}</div>
+		<div className='fixed w-full h-full z-10 top-0 right-0 flex justify-end inset-0 box-border'>
 			<div className='relative w-max max-w-full h-full p-4 bg-blue-950 flex flex-col'>
 				<button
 					onClick={close}
@@ -61,28 +56,41 @@ export const ModalPersons = () => {
 						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
 							<div>
 								<select
-									required
-									value={role}
-									onChange={(e) => setRole(e.target.value as RoleType)}
+									{...register('role', { required: true })}
 									className='w-full p-2 border rounded-xs border-gray-600'
 								>
-									<option value='' className='bg-violet-950 text-white'>Родство</option>
+									<option value='' disabled className='bg-violet-950 text-white'>Кем приходится</option>
 									<option value='father' className='bg-violet-950 text-white'>Отец</option>
 									<option value='mother' className='bg-violet-950 text-white'>Мать</option>
 								</select>
 							</div>
-							<input
-								{...register("firstName", { required: true })}
-								placeholder='Имя'
-								className='p-2 border rounded-xs border-gray-600'
-							/>
-							{errors.firstName && <span>This field is required</span>}
-							<input
-								{...register('lastName', { required: true })}
-								placeholder='Фамилия'
-								className='p-2 border rounded-xs border-gray-600'
-							/>
-							{errors.lastName && <span>This field is required</span>}
+
+							<div className='w-full flex flex-col gap-4'>
+								<input
+									{...register('firstName', { required: true })}
+									placeholder='Имя *'
+									className={`p-2 border rounded-xs ${errors.lastName ? 'border-red-800' : 'border-gray-600'}`} />
+								{errors.firstName && <span className='text-red-800'>This field is required</span>}
+								<input
+									{...register('lastName', { required: true })}
+									placeholder='Фамилия *'
+									className={`p-2 border rounded-xs ${errors.lastName ? ' border-red-800' : 'border-gray-600'}`}
+								/>
+								{errors.lastName && <span className='text-red-800'>This field is required</span>}
+								{
+									role === 'mother' &&
+									<input
+										{...register('maidenName')}
+										placeholder='Девичья фамилия'
+										className='p-2 border rounded-xs border-gray-600'
+									/>
+								}
+								<input
+									{...register('middleName')}
+									placeholder='Отчество'
+									className='p-2 border rounded-xs border-gray-600'
+								/>
+							</div>
 							<div className='flex justify-between gap-2'>
 								<select
 									{...register('birthDay', {

@@ -36,7 +36,11 @@ export const useCreatePerson = () => {
 				throw new Error('No token')
 			}
 
-			const createdPerson = await personsCreate(body, token)
+			if (!role && !body) {
+				throw new Error('No token')
+			}
+			const gender: 'male' | 'female' = (role === 'father') ? 'male' : 'female'
+			const createdPerson = await personsCreate({ ...body, gender }, token)
 			const newPersonId = createdPerson.person.id
 			const parentIdField = role === 'father' ? 'fatherId' : 'motherId'
 			const updateParentPerson = await personsUpdate(currentPersonId, { [parentIdField]: newPersonId }, token)

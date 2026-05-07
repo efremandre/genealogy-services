@@ -3,7 +3,7 @@
 import { getToken } from '@/shared/lib/token-storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { personsUpdate } from '../api/persons.api'
-import { useModalStore } from './modal.store'
+import { usePersonStore } from './person.store'
 import { UpdatePerson } from './persons.type'
 
 /**
@@ -23,7 +23,7 @@ import { UpdatePerson } from './persons.type'
  * return persons.map(person => <div key={person.id}>{person.firstName}</div>);
  */
 export const useUpdatePerson = () => {
-	const { currentPersonId } = useModalStore()
+	const currentPersonId = usePersonStore((s) => s.payload?.currentPersonId)
 	const queryClient = useQueryClient()
 
 	return useMutation({
