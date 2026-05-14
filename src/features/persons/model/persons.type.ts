@@ -42,6 +42,11 @@ export type PersonsResponse = {
 	persons: Person[]
 }
 
+export type PersonResponse = {
+	/** Массив людей */
+	person: Person
+}
+
 export type ParentType = 'father' | 'mother'
 
 export type CreatePersonRequest = {
@@ -63,6 +68,16 @@ export type CreatePersonFormValues = Omit<CreatePersonRequest, 'gender'> & {
 	role: ParentType | ''
 }
 
+export type UpdatePersonResponse = {
+	person: Person
+}
+
+export type CreatePersonMutationArgs = {
+	body: Omit<CreatePersonRequest, 'gender'>
+	currentPersonId: number
+	role: ParentType | ''
+}
+
 export type UpdatePerson = {
 	firstName?: string
 	lastName?: string
@@ -75,16 +90,11 @@ export type UpdatePerson = {
 	deathYear?: number
 	deathMonth?: number
 	deathDay?: number
-	motherId?: number
-	fatherId?: number
 }
 
-export type UpdatePersonResponse = {
-	person: Person
-}
+export type UpdatePersonFormValues = UpdatePerson
 
-export type CreatePersonMutationArgs = {
-	body: Omit<CreatePersonRequest, 'gender'>
+export type UpdatePersonMutationArgs = {
+	body: UpdatePerson
 	currentPersonId: number
-	role: ParentType | ''
 }

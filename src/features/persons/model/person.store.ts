@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { ParentType } from './persons.type'
 
-type ModalType = 'createPerson' | 'deletePerson' | null
+type ModalType = 'createPerson' | 'updatePerson' | 'deletePerson' | null
 
 type Store = {
 	modal: ModalType

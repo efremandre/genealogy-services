@@ -3,31 +3,16 @@
 import { getToken } from '@/shared/lib/token-storage'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { personsUpdate } from '../api/persons.api'
-import { usePersonStore } from './person.store'
-import { UpdatePerson } from './persons.type'
+import { UpdatePersonMutationArgs } from './persons.type'
 
-/**
- * Хук для получения списка всех людей из API.
- *
- * Выполняет запрос к API с авторизацией через токен.
- * Кэширует данные с помощью TanStack Query.
- *
- * @returns Объект запроса с данными, состоянием загрузки и ошибками
- *
- * @example
- * const { data: persons, isLoading, error } = usePersons();
- *
- * if (isLoading) return <div>Загрузка...</div>;
- * if (error) return <div>Ошибка: {error.message}</div>;
- *
- * return persons.map(person => <div key={person.id}>{person.firstName}</div>);
- */
 export const useUpdatePerson = () => {
-	const currentPersonId = usePersonStore((s) => s.payload?.currentPersonId)
 	const queryClient = useQueryClient()
 
 	return useMutation({
-		mutationFn: async (body: UpdatePerson) => {
+		mutationFn: async ({
+			body,
+			currentPersonId
+		}: UpdatePersonMutationArgs) => {
 			const token = getToken()
 
 			if (!token) {
@@ -36,6 +21,10 @@ export const useUpdatePerson = () => {
 
 			if (!currentPersonId) {
 				throw new Error('No current Person Id')
+			}
+
+			if (!body) {
+				throw new Error('No body')
 			}
 
 			const res = personsUpdate(currentPersonId, body, token)
