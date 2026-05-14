@@ -1,15 +1,16 @@
 'use client'
 import { useModalDeleteStore } from '@/features/persons/model/modal-delete.store'
-import { useModalStore } from '@/features/persons/model/modal.store'
+import { usePersonStore } from '@/features/persons/model/person.store'
 import { usePersons } from '@/features/persons/model/use-persons'
 import AprooveDelete from '@/features/persons/ui/modal-aproove-delete'
 import { ModalPersons } from '@/features/persons/ui/modal-persons'
+import { ModalUpdatePersons } from '@/features/persons/ui/modal-update-persons'
 import { PersonMiniCard } from '@/features/persons/ui/person-mini-card'
 import { useTree } from '@/features/tree/model/use-tree'
 import { Loader } from '@/shared/ui/loader'
 
 const Persons = () => {
-	const { isOpen } = useModalStore()
+	const modal = usePersonStore((s) => s.modal)
 	const { isOpenModalDelete } = useModalDeleteStore()
 	const { data: tree } = useTree()
 	const { data: persons, isLoading, isError } = usePersons()
@@ -26,7 +27,8 @@ const Persons = () => {
 
 	return (
 		<div>
-			{isOpen && <ModalPersons />}
+			{modal === 'createPerson' && <ModalPersons />}
+			{modal === 'updatePerson' && <ModalUpdatePersons />}
 			{isOpenModalDelete && <AprooveDelete />}
 			<h1 className='my-4 text-center '>
 				Моя родословная

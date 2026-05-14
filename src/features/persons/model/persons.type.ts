@@ -1,5 +1,3 @@
-export type RoleType = 'father' | 'mother' | ''
-
 /**
  * Тип данных для человека в генеалогическом древе.
  */
@@ -44,7 +42,14 @@ export type PersonsResponse = {
 	persons: Person[]
 }
 
-export type AddRequestPerson = {
+export type PersonResponse = {
+	/** Массив людей */
+	person: Person
+}
+
+export type ParentType = 'father' | 'mother'
+
+export type CreatePersonRequest = {
 	firstName: string
 	lastName: string
 	maidenName?: string
@@ -59,6 +64,20 @@ export type AddRequestPerson = {
 	deathDay?: number
 }
 
+export type CreatePersonFormValues = Omit<CreatePersonRequest, 'gender'> & {
+	role: ParentType | ''
+}
+
+export type UpdatePersonResponse = {
+	person: Person
+}
+
+export type CreatePersonMutationArgs = {
+	body: Omit<CreatePersonRequest, 'gender'>
+	currentPersonId: number
+	role: ParentType | ''
+}
+
 export type UpdatePerson = {
 	firstName?: string
 	lastName?: string
@@ -71,16 +90,11 @@ export type UpdatePerson = {
 	deathYear?: number
 	deathMonth?: number
 	deathDay?: number
-	motherId?: number
-	fatherId?: number
 }
 
-export type UpdatePersonResponse = {
-	person: Person
-}
+export type UpdatePersonFormValues = UpdatePerson
 
-export type CreatePersonMutationArgs = {
-	body: AddRequestPerson
+export type UpdatePersonMutationArgs = {
+	body: UpdatePerson
 	currentPersonId: number
-	role: 'father' | 'mother' | ''
 }

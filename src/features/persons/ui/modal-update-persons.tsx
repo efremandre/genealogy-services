@@ -1,36 +1,57 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useCreatePerson } from '../model/create-persons'
 import { days, months, years } from '../model/date-options'
 import { usePersonStore } from '../model/person.store'
-import { CreatePersonFormValues, CreatePersonMutationArgs } from '../model/persons.type'
+import { UpdatePersonFormValues } from '../model/persons.type'
+import { useUpdatePerson } from '../model/update-persons'
+import { useEffect } from 'react'
+import { usePerson } from '../model/use-person'
 
-export const ModalPersons = () => {
-	const { mutate, isPending } = useCreatePerson()
-	const close = usePersonStore((s) => s.close)
+/** TODO:
+ * Сделать очистку полей или/и чтобы в полях выставилось то, что уже заполненно
+ * 
+ */
+
+export const ModalUpdatePersons = () => {
 	const currentPersonId = usePersonStore((s) => s.payload?.currentPersonId)
+	const { data: person } = usePerson(currentPersonId)
+	const role = usePersonStore((s) => s.payload?.role)
+	const { mutate, isPending } = useUpdatePerson()
+	const close = usePersonStore((s) => s.close)
+
 	const {
 		register,
 		handleSubmit,
 		watch,
 		formState: { errors },
-	} = useForm<CreatePersonFormValues>({
+	} = useForm<UpdatePersonFormValues>({
 		defaultValues: {
 			isAlive: true,
-			role: ''
 		},
 	})
 
-	const isAlive = watch('isAlive')
-	const role = watch('role')
+	useEffect(() => {
+		console.log(person)
 
-	const onSubmit: SubmitHandler<CreatePersonFormValues> = (data) => {
+	}, [person])
+
+	const isAlive = watch('isAlive')
+
+	const onSubmit: SubmitHandler<UpdatePersonFormValues> = (data) => {
 		if (!currentPersonId) {
 			throw new Error('No current Person Id')
 		}
 
+		let newData = Object.fromEntries(
+			Object.entries(data).filter(([_, value]) => {
+				return value !== '' && value !== undefined
+			})
+		)
+
+		console.log(newData)
+
+
 		mutate({
-			body: data,
-			role,
+			body: newData,
 			currentPersonId
 		},
 			{
@@ -53,41 +74,33 @@ export const ModalPersons = () => {
 				>X</button>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex-1'>
 					<div className='w-80 flex flex-col h-full'>
-						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
+						<div>Редактировать персону</div>
+						<div className='flex-[1_0_auto] w-full flex flex-col gap-4'>
 							<div>
-								<select
-									{...register('role', { required: true })}
-									className='w-full p-2 border rounded-xs border-gray-600'
-								>
-									<option value='' disabled className='bg-violet-950 text-white'>Кем приходится</option>
-									<option value='father' className='bg-violet-950 text-white'>Отец</option>
-									<option value='mother' className='bg-violet-950 text-white'>Мать</option>
-								</select>
+								{currentPersonId}
 							</div>
 
 							<div className='w-full flex flex-col gap-4'>
 								<input
-									{...register('firstName', { required: true })}
-									placeholder='Имя *'
-									className={`p-2 border rounded-xs ${errors.lastName ? 'border-red-800' : 'border-gray-600'}`} />
-								{errors.firstName && <span className='text-red-800'>This field is required</span>}
-								<input
-									{...register('lastName', { required: true })}
-									placeholder='Фамилия *'
+									{...register('lastName')}
+									placeholder={person?.lastName ? person?.lastName : 'Фамилия'}
 									className={`p-2 border rounded-xs ${errors.lastName ? ' border-red-800' : 'border-gray-600'}`}
 								/>
-								{errors.lastName && <span className='text-red-800'>This field is required</span>}
 								{
-									role === 'mother' &&
+									person?.gender === 'female' &&
 									<input
 										{...register('maidenName')}
-										placeholder='Девичья фамилия'
+										placeholder={person?.maidenName ? person?.maidenName : 'Фамилия при рождении'}
 										className='p-2 border rounded-xs border-gray-600'
 									/>
 								}
 								<input
+									{...register('firstName')}
+									placeholder={person?.firstName ? person?.firstName : 'Имя'}
+									className={`p-2 border rounded-xs ${errors.lastName ? 'border-red-800' : 'border-gray-600'}`} />
+								<input
 									{...register('middleName')}
-									placeholder='Отчество'
+									placeholder={person?.middleName ? person?.middleName : 'Отчество'}
 									className='p-2 border rounded-xs border-gray-600'
 								/>
 							</div>
