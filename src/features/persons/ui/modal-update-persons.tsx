@@ -1,10 +1,11 @@
+import { useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { days, months, years } from '../model/date-options'
 import { usePersonStore } from '../model/person.store'
 import { UpdatePersonFormValues } from '../model/persons.type'
 import { useUpdatePerson } from '../model/update-persons'
-import { useEffect } from 'react'
 import { usePerson } from '../model/use-person'
+import { X } from 'lucide-react'
 
 /** TODO:
  * Сделать очистку полей или/и чтобы в полях выставилось то, что уже заполненно
@@ -70,8 +71,8 @@ export const ModalUpdatePersons = () => {
 			<div className='relative w-max max-w-full h-full p-4 bg-blue-950 flex flex-col'>
 				<button
 					onClick={close}
-					className='absolute top-5 left-[-40] p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
-				>X</button>
+					className='absolute top-5 left-[-40] p-1 w-[30] h-[30] flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
+				><X size={16} /></button>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex-1'>
 					<div className='w-80 flex flex-col h-full'>
 						<div>Редактировать персону</div>

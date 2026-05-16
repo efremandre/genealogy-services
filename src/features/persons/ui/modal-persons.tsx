@@ -3,6 +3,7 @@ import { useCreatePerson } from '../model/create-persons'
 import { days, months, years } from '../model/date-options'
 import { usePersonStore } from '../model/person.store'
 import { CreatePersonFormValues, CreatePersonMutationArgs } from '../model/persons.type'
+import { X } from 'lucide-react'
 
 export const ModalPersons = () => {
 	const { mutate, isPending } = useCreatePerson()
@@ -49,8 +50,8 @@ export const ModalPersons = () => {
 			<div className='relative w-max max-w-full h-full p-4 bg-blue-950 flex flex-col'>
 				<button
 					onClick={close}
-					className='absolute top-5 left-[-40] p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
-				>X</button>
+					className='absolute top-5 left-[-40] p-1 w-[30] h-[30] flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
+				><X size={16} /></button>
 				<form onSubmit={handleSubmit(onSubmit)} className='flex-1'>
 					<div className='w-80 flex flex-col h-full'>
 						<div className='mt-10 flex-[1_0_auto] w-full flex flex-col gap-4'>
