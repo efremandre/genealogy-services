@@ -1,6 +1,7 @@
 import FemaleAvatar from '@/features/persons/assets/female-avatar.png'
 import MaleAvatar from '@/features/persons/assets/male-avatar.png'
 import { Person } from '@/features/persons/model/persons.type'
+import { SquarePen, SquarePlus, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import { useModalDeleteStore } from '../model/modal-delete.store'
 import { usePersonStore } from '../model/person.store'
@@ -40,21 +41,20 @@ export const PersonMiniCard = ({ person }: Props) => {
 					{birthDate.length > 0 && birthDate}
 				</div>
 			</div>
-			<div className='flex justify-between gap-2 opacity-0 transition group-hover:opacity-100'>
-				<button
-					onClick={() => openModal('createPerson', { currentPersonId: id })}
-					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
-				>+</button>
+			<div className='flex justify-between gap-4 opacity-0 transition group-hover:opacity-100'>
 				{
 					!isParent &&
 					<button
 						onClick={() => openModalDelete(id)}
-						className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>-</button>
+						className='p-1 w-[30] h-[30]  flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'><Trash2 size={16} /></button>
 				}
-
 				<button
 					onClick={() => openModal('updatePerson', { currentPersonId: id })}
-					className='p-1 w-[30] h-[30] bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'>@</button>
+					className='p-1 w-[30] h-[30] flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'><SquarePen size={16} /></button>
+				<button
+					onClick={() => openModal('createPerson', { currentPersonId: id })}
+					className='p-1 w-[30] h-[30]  flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
+				><SquarePlus size={16} /></button>
 
 			</div>
 		</div >
