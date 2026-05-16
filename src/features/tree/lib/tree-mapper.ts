@@ -1,0 +1,56 @@
+import { Person } from '@/features/persons/model/persons.type'
+
+type NodeType = {
+	id: string
+	data: {
+		label: string
+		person: Person
+	}
+	type: 'personNode'
+}
+
+type EdgeType = {
+	id: string           // уникальный id (например "edge-2-1")
+	source: string       // ID родителя (число в строку!)
+	target: string       // ID ребёнка (число в строку!)
+	label?: string       // опционально: "отец" или "мать"
+}
+
+export const mapPersonsToNodes = (persons: Person[]): NodeType[] => {
+	return persons.map((person) => ({
+		id: String(person.id),
+		data: {
+			label: `${person.firstName} ${person.lastName} ${person.birthYear ? ` (${person.birthYear})` : ''}`,
+			person
+		},
+		type: 'personNode'
+	}
+	))
+}
+
+export const mapPersonsToEdges = (persons: Person[]): EdgeType[] => {
+	const edges = persons.flatMap((person) => {
+		const parentEdges: EdgeType[] = []
+		if (person.fatherId) {
+			parentEdges.push({
+				id: `edge-${person.id}-${person.fatherId}`,
+				source: String(person.fatherId),
+				target: String(person.id),
+				label: 'отец'
+			})
+		}
+
+		if (person.motherId) {
+			parentEdges.push({
+				id: `edge-${person.id}-${person.motherId}`,
+				source: String(person.motherId),
+				target: String(person.id),
+				label: 'мать'
+			})
+		}
+
+		return parentEdges
+	})
+
+	return edges
+}

@@ -6,8 +6,10 @@ import AprooveDelete from '@/features/persons/ui/modal-aproove-delete'
 import { ModalPersons } from '@/features/persons/ui/modal-persons'
 import { ModalUpdatePersons } from '@/features/persons/ui/modal-update-persons'
 import { PersonMiniCard } from '@/features/persons/ui/person-mini-card'
+import { mapPersonsToEdges, mapPersonsToNodes } from '@/features/tree/lib/tree-mapper'
 import { useTree } from '@/features/tree/model/use-tree'
 import { Loader } from '@/shared/ui/loader'
+import { useEffect } from 'react'
 
 const Persons = () => {
 	const modal = usePersonStore((s) => s.modal)
@@ -24,6 +26,11 @@ const Persons = () => {
 	const filterPerson = persons.filter(person => person.id !== tree.rootPersonId)
 
 	if (!rootPerson) return <div>Корневая персона не найдена</div>
+	const personsdNode = mapPersonsToNodes(persons)
+	const personEdge = mapPersonsToEdges(persons)
+	console.log(personEdge)
+	console.log(persons)
+
 
 	return (
 		<div>
