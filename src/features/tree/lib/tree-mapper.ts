@@ -1,20 +1,5 @@
 import { Person } from '@/features/persons/model/persons.type'
-
-type NodeType = {
-	id: string
-	data: {
-		label: string
-		person: Person
-	}
-	type: 'personNode'
-}
-
-type EdgeType = {
-	id: string           // уникальный id (например "edge-2-1")
-	source: string       // ID родителя (число в строку!)
-	target: string       // ID ребёнка (число в строку!)
-	label?: string       // опционально: "отец" или "мать"
-}
+import { EdgeType, NodeType } from '../model/tree.type'
 
 export const mapPersonsToNodes = (persons: Person[]): NodeType[] => {
 	return persons.map((person) => ({
