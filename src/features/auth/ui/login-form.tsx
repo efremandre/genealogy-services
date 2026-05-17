@@ -19,7 +19,7 @@ export const LoginForm: React.FC = () => {
 			{ email, password },
 			{
 				onSuccess: () => {
-					router.replace('/persons')
+					router.replace('/tree')
 				},
 				onError: () => {
 					console.log('Ошибка логина')

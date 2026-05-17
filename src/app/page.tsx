@@ -13,7 +13,7 @@ const Home = () => {
 			if (!user || isError) {
 				router.replace('/login')
 			} else {
-				router.replace('/persons')
+				router.replace('/tree')
 			}
 		}
 
