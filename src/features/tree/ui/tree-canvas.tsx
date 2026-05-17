@@ -26,8 +26,6 @@ export const TreeCanvas = ({ nodes, edges }: Props) => {
 				nodesConnectable={false}
 				fitView
 			>
-				<Background />
-				<Controls />
 				<MiniMap />
 			</ReactFlow>
 		</div>

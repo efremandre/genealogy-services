@@ -24,4 +24,5 @@ export type EdgeType = {
 	source: string
 	target: string
 	label?: string
+	type: string
 }

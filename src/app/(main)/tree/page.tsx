@@ -30,6 +30,5 @@ export default function TreePage() {
 			{isOpenModalDelete && <AprooveDelete />}
 			<TreeCanvas nodes={layoutedNodes} edges={edges} />
 		</>
-
 	)
 }

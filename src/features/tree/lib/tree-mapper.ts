@@ -21,7 +21,7 @@ export const mapPersonsToEdges = (persons: Person[]): EdgeType[] => {
 				id: `edge-${person.id}-${person.fatherId}`,
 				source: String(person.fatherId),
 				target: String(person.id),
-				label: 'отец'
+				type: 'step'
 			})
 		}
 
@@ -30,7 +30,7 @@ export const mapPersonsToEdges = (persons: Person[]): EdgeType[] => {
 				id: `edge-${person.id}-${person.motherId}`,
 				source: String(person.motherId),
 				target: String(person.id),
-				label: 'мать'
+				type: 'step'
 			})
 		}
 

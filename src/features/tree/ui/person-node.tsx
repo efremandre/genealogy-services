@@ -14,8 +14,8 @@ export const PersonNode = ({ data }: Props) => {
 			<div className='p-2 flex flex-col items-center gap-4 w-[200] rounded-md group relative'>
 				<PersonMiniCard person={person} />
 			</div >
-			<Handle type='target' position={Position.Top} />
-			<Handle type='source' position={Position.Bottom} />
+			<Handle type='target' position={Position.Top} className='opacity-0' />
+			<Handle type='source' position={Position.Bottom} className='opacity-0' />
 		</div>
 	)
 }
