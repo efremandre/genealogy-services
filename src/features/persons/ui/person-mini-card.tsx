@@ -52,7 +52,11 @@ export const PersonMiniCard = ({ person }: Props) => {
 					onClick={() => openModal('updatePerson', { currentPersonId: id })}
 					className='p-1 w-[30] h-[30] flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'><SquarePen size={16} /></button>
 				<button
-					onClick={() => openModal('createPerson', { currentPersonId: id })}
+					onClick={() => {
+						console.log('test')
+
+						openModal('createPerson', { currentPersonId: id })
+					}}
 					className='p-1 w-[30] h-[30]  flex items-center justify-center bg-amber-50 cursor-pointer text-black text-[10px] rounded-full transition hover:opacity-50'
 				><SquarePlus size={16} /></button>
 

@@ -16,7 +16,7 @@ export const mapPersonsToNodes = (persons: Person[]): NodeType[] => {
 export const mapPersonsToEdges = (persons: Person[]): EdgeType[] => {
 	const edges = persons.flatMap((person) => {
 		const parentEdges: EdgeType[] = []
-		if (person.fatherId) {
+		if (person.fatherId && person.fatherId !== null) {
 			parentEdges.push({
 				id: `edge-${person.id}-${person.fatherId}`,
 				source: String(person.fatherId),
@@ -25,7 +25,7 @@ export const mapPersonsToEdges = (persons: Person[]): EdgeType[] => {
 			})
 		}
 
-		if (person.motherId) {
+		if (person.motherId && person.motherId !== null) {
 			parentEdges.push({
 				id: `edge-${person.id}-${person.motherId}`,
 				source: String(person.motherId),

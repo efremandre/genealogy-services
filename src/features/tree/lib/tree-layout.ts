@@ -4,16 +4,16 @@ import { EdgeType, NodeType } from '../model/tree.type'
 export const applyTreeLayout = (
 	nodes: NodeType[],
 	edges: EdgeType[]
-): NodeType[] => {
-	const g = new dagre.graphlib.Graph()
+): (NodeType & { position: { x: number, y: number } })[] => {
+	const g = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}))
 
 	g.setGraph({
-		rankdir: 'BT',
-		nodesep: 50,
-		ranksep: 100
+		rankdir: 'TB',
+		nodesep: 160,
+		ranksep: 160
 	})
 
-	nodes.forEach((node) => g.setNode(node.id, { width: 180, height: 60 }))
+	nodes.forEach((node) => g.setNode(node.id, { width: 180, height: 180 }))
 	edges.forEach((edge) => g.setEdge(edge.source, edge.target))
 	dagre.layout(g)
 
@@ -25,4 +25,3 @@ export const applyTreeLayout = (
 		}
 	}))
 }
-
